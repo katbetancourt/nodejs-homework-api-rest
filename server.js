@@ -1,4 +1,4 @@
-const app = require('./app')
+const app = require("./app");
 const express = require("express");
 const contactsRouter = require("./routes/api/contacts");
 
@@ -7,10 +7,8 @@ app.listen(port, () => {
   console.log(`Server running on port: ${port}`);
 });
 
-
-
 // app.js
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 // Conexión a la base de datos
 mongoose.connect(
@@ -20,11 +18,10 @@ mongoose.connect(
 
 const db = mongoose.connection;
 
-db.on('error', console.error.bind(console, 'Error de conexión:'));
-db.once('open', function() {
-    console.log('Conexión a la base de datos exitosa');
+db.on("error", console.error.bind(console, "Error de conexión:"));
+db.once("open", function () {
+  console.log("Conexión a la base de datos exitosa");
 });
-
 
 const PORT = process.env.PORT || 3000;
 
