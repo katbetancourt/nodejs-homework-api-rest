@@ -1,6 +1,8 @@
 const fs = require("fs").promises;
 const path = require("path");
 const contactsFilePath = path.join(__dirname, "../data/contacts.json");
+const Contact = require("../models/contacts");
+
 
 async function listContacts() {
   const contactsData = await fs.readFile(contactsFilePath, "utf8");
@@ -42,10 +44,33 @@ async function updateContact(id, newData) {
   }
 }
 
+
+
+
+async function updateStatusContact(contactId, favorite) {
+  try {
+    // Encuentra el contacto por ID y actualiza el campo "favorite"
+    const updatedContact = await Contact.findByIdAndUpdate(
+      contactId,
+      { favorite },
+      { new: true }
+    );
+    return updatedContact;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+
+
+
 module.exports = {
   listContacts,
   getById,
   addContact,
   removeContact,
   updateContact,
+  updateStatusContact,
 };
+
