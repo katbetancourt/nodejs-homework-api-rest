@@ -1,13 +1,15 @@
 const express = require("express");
 const router = express.Router();
+const updateStatusContact = require("../../controllers/contactsController");
+
 const {
   listContacts,
   getById,
   addContact,
   removeContact,
   updateContact,
-} = require("../controllers/contactsController");
-const { validateContact } = require("../validators/contactValidator");
+} = require("../../controllers/contactsController");
+const { validateContact } = require("../../validators/contactValidator");
 
 router.get("/", async (req, res, next) => {
   try {
@@ -66,4 +68,37 @@ router.put("/:id", validateContact, async (req, res, next) => {
   }
 });
 
+
+
+router.patch("/:contactId/favorite", async (req, res) => {
+  const { contactId } = req.params;
+  const { favorite } = req.body;
+
+  // Verifica si se proporcionó el campo "favorite" en el body
+  if (typeof favorite === "undefined") {
+    return res.status(400).json({ message: "missing field favorite" });
+  }
+
+  try {
+    // Actualiza el estado del contacto en la base de datos
+    const updatedContact = await updateStatusContact(contactId, favorite);
+    if (!updatedContact) {
+      return res.status(404).json({ message: "Not found" });
+    }
+
+    return res.status(200).json(updatedContact);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 module.exports = router;
+
+
+
+
+
+
+
+
